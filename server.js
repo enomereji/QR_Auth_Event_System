@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const fs = require ('fs');
 const { v4: uuidv4 } = require('uuid');
@@ -25,14 +26,19 @@ let tokens = fs.existsSync(tokenFile)
 // Generate QR codes with unique tokens
 function generateTokens(count) {
     tokens = [];
-    const PUBLIC_URL = 'https://qr-auth-event-system.onrender.com/'
+
+
+    const PUBLIC_URL = process.env.PUBLIC_URL;
+
 
     for (let i = 1; i <= count; i++) {
         const token = uuidv4();
         const url = `${PUBLIC_URL}/verify/${token}`;
         const filename = `qr_${i}.png`;
 
+        
         tokens.push({ id: i, token, used: false });
+
 
         QRCode.toFile(path.join(qrDir, filename), url);
     }
