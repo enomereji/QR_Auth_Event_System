@@ -25,9 +25,11 @@ let tokens = fs.existsSync(tokenFile)
 // Generate QR codes with unique tokens
 function generateTokens(count) {
     tokens = [];
+    const PUBLIC_URL = 'https://qr-auth-event-system.onrender.com/'
+
     for (let i = 1; i <= count; i++) {
         const token = uuidv4();
-        const url = `http://localhost:${PORT}/verify/${token}`;
+        const url = `${PUBLIC_URL}/verify/${token}`;
         const filename = `qr_${i}.png`;
 
         tokens.push({ id: i, token, used: false });
