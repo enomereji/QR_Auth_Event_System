@@ -36,7 +36,7 @@ function generateTokens(count) {
         const url = `${PUBLIC_URL}/verify/${token}`;
         const filename = `qr_${i}.png`;
 
-        
+
         tokens.push({ id: i, token, used: false });
 
 
@@ -46,7 +46,9 @@ function generateTokens(count) {
 }
 
 // One-time generation ()
-// generateTokens(500);
+
+
+generateTokens(500);
 
 //Verify route
 
