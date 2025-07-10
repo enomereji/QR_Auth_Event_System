@@ -57,13 +57,30 @@ app.get('/', (req, res) => {
 });
 
 
+
+console.log("Tokens loaded:", tokens.length)
+
+
 app.get('/verify/:token', (req, res) => {
-    const entry = tokens.find(t => t.token === req.params.token);
-    if (!entry) return res.send('Invalid QR Code');
+    const scannedToken = req.params.token;
+    console.log("Received token:", scannedToken);
+    console.log("Searching token in:", tokens.map(t => t.token).slice(0, 5)); // shows first 5
+
     
+    const entry = tokens.find(t => t.token === scannedToken)
+    
+
+    if (!entry) {
+        console.log("Token not found.");
+        return res.send('Invalid QR Code');
+    }
+
+    
+    console.log("Token found.");
     res.send('Access Granted. Welcome to Mrs Utis 80th!');
 });
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`)
 });
+
