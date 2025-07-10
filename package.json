@@ -1,0 +1,16 @@
+{
+  "name": "qr_auth_event_system",
+  "version": "1.0.0",
+  "description": "This a project that uses auth to give event goes access",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Eze Omereji",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "qrcode": "^1.5.4",
+    "uuid": "^11.1.0"
+  }
+}
