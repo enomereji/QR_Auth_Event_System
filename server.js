@@ -18,10 +18,15 @@ app.use(express.json());
 
 if (!fs.existsSync(qrDir)) fs.mkdirSync(qrDir);
 
+
 // Load token list
 let tokens = fs.existsSync(tokenFile)
     ? JSON.parse(fs.readFileSync(tokenFile))
     : [];
+
+
+console.log("First 5 tokens from loaded file:", tokens.map(t => t.token).slice(0, 5));
+
 
 // Generate QR codes with unique tokens
 function generateTokens(count) {
@@ -45,29 +50,33 @@ function generateTokens(count) {
     fs.writeFileSync(tokenFile, JSON.stringify(tokens, null, 2));
 }
 
+
 // One-time generation ()
+//generateTokens(500);
 
-
-generateTokens(500);
 
 //Verify route
-
 app.get('/', (req, res) => {
     res.redirect('/scanner.html')
 });
-
 
 
 console.log("Tokens loaded:", tokens.length)
 
 
 app.get('/verify/:token', (req, res) => {
-    const scannedToken = req.params.token;
+    const scannedToken = req.params.token.trim();
     console.log("Received token:", scannedToken);
-    console.log("Searching token in:", tokens.map(t => t.token).slice(0, 5)); // shows first 5
+    
+
+    tokens.forEach((t, i) => {
+        if (t.token.trim() === scannedToken) {
+            console.log(`Match at index ${i}`)
+        }
+    })
 
     
-    const entry = tokens.find(t => t.token === scannedToken)
+    const entry = tokens.find(t => t.token.trim() === scannedToken);
     
 
     if (!entry) {
@@ -76,7 +85,7 @@ app.get('/verify/:token', (req, res) => {
     }
 
     
-    console.log("Token found.");
+    console.log("Token matched.");
     res.send('Access Granted. Welcome to Mrs Utis 80th!');
 });
 
