@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mrs Utis 80th Birthday Check-In</title>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <title>QR Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
-  <h1>Scan QR Code to Enter Mrs Utis 80th</h1>
+  <h2>Scan Your QR Code</h2>
   <div id="reader" style="width: 300px;"></div>
-  <div id="result"></div>
-  <script>
-    window.onload = function () {
-     function onScanSuccess(decodedText, decodedResult) {
-       fetch(decodedText)
-         .then(res => res.text())
-         .then(html => document.getElementById('result').innerHTML = html);
-     }
 
-     new Html5Qrcode("reader").start(
-       { facingMode: "environment" },
-       { fps: 10, qrbox: 250 },
-       onScanSuccess
-     );
-    }
+  <script>
+    const qrScanner = new Html5Qrcode("reader");
+
+    qrScanner.start(
+      { facingMode: "environment" }, // rear camera
+      { fps: 10, qrbox: 250 },
+      (decodedText, decodedResult) => {
+        console.log("QR Code detected:", decodedText);
+        window.location.href = decodedText; // redirect to /verify/:token
+      },
+      (errorMessage) => {
+        // Ignore errors
+      }
+    ).catch(err => {
+      console.error("Unable to start scanning:", err);
+    });
   </script>
 </body>
 </html>
